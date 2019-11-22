@@ -55,9 +55,16 @@ export const log = (methodName, evt, gestureState) => {
 };
 
 class TriStateToggleSwitch extends Component {
+  debugLog(...msg) {
+    if (this.props.debug)
+      console.log(...msg)
+  }
+
   constructor(props) {
     super(props);
+    this.debugLog("Props: ", msg)
     if (this.props.disabled) {
+      console.log("DISABLED", "setting to grey choices")
       this.props.selectedNoneBgColor = "#EEEEEEE"
       this.props.selectedLeftBgColor = "#EEEEEEE"
       this.props.selectedRightBgColor = "#EEEEEEE"
@@ -215,49 +222,53 @@ class TriStateToggleSwitch extends Component {
       this._storedCircleXPos = value;
     });
 
-    thisComponent.containerPanResponder = PanResponder.create({
-      onStartShouldSetPanResponder: () => true,
-      onPanResponderTerminationRequest: () => false,
-      onPanResponderGrant: () => {
-        const storedCircleXPos = this._storedCircleXPos.value;
-        if (storedCircleXPos) {
-          this._lastCircleXPosOrigin = storedCircleXPos;
-          this.state.circleXPos.setOffset(storedCircleXPos);
-        }
-      },
-      onPanResponderMove: (evt, gestureState) => {
-        log('onPanResponderMove: ', evt, gestureState);
-        return Animated.event([
-          null,
-          {
-            dx: thisComponent.state.circleXPos
+    if (!this.props.disabled) {
+      this.debugLog("Allow moving")
+      thisComponent.containerPanResponder = PanResponder.create({
+        onStartShouldSetPanResponder: () => true,
+        onPanResponderTerminationRequest: () => false,
+        onPanResponderGrant: () => {
+          const storedCircleXPos = this._storedCircleXPos.value;
+          if (storedCircleXPos) {
+            this._lastCircleXPosOrigin = storedCircleXPos;
+            this.state.circleXPos.setOffset(storedCircleXPos);
           }
-        ])(evt, gestureState);
-      },
-      onPanResponderRelease: (evt, gestureState) => {
-        const { dx } = gestureState;
-        const direction = dx < 0 ? 'left' : 'right';
-        const location = Math.abs(dx) - Math.abs(this._lastCircleXPosOrigin);
-        console.log(`dx: ${dx}`);
-        console.log(`_storedCircleXPos: ${this._storedCircleXPos.value}`);
-        console.log(`this._lastCircleXPosOrigin: ${this._lastCircleXPosOrigin}`);
-        console.log(`location: ${location}`);
-        console.log(`this.state.xDistance: ${this.state.xDistance}`);
-        console.log(`location >= this.state.xDistance-15: ${location >= this.state.xDistance - 15}`);
-        console.log(`direction: ${direction}`);
-        if (location >= this.state.xDistance - this.state.xDisntanceThreshold) {
-          if (direction === 'left') {
-            this.onPressNo();
-          } else if (direction === 'right') {
-            this.onPressYes();
+        },
+        onPanResponderMove: (evt, gestureState) => {
+          log('onPanResponderMove: ', evt, gestureState);
+          return Animated.event([
+            null,
+            {
+              dx: thisComponent.state.circleXPos
+            }
+          ])(evt, gestureState);
+        },
+        onPanResponderRelease: (evt, gestureState) => {
+          const { dx } = gestureState;
+          const direction = dx < 0 ? 'left' : 'right';
+          const location = Math.abs(dx) - Math.abs(this._lastCircleXPosOrigin);
+          console.log(`dx: ${dx}`);
+          console.log(`_storedCircleXPos: ${this._storedCircleXPos.value}`);
+          console.log(`this._lastCircleXPosOrigin: ${this._lastCircleXPosOrigin}`);
+          console.log(`location: ${location}`);
+          console.log(`this.state.xDistance: ${this.state.xDistance}`);
+          console.log(`location >= this.state.xDistance-15: ${location >= this.state.xDistance - 15}`);
+          console.log(`direction: ${direction}`);
+          if (location >= this.state.xDistance - this.state.xDisntanceThreshold) {
+            if (direction === 'left') {
+              this.onPressNo();
+            } else if (direction === 'right') {
+              this.onPressYes();
+            }
+          } else {
+            this.onPressNone();
           }
-        } else {
-          this.onPressNone();
+  
+          log('onPanResponderRelease: ', evt, gestureState);
         }
+      });
+    }
 
-        log('onPanResponderRelease: ', evt, gestureState);
-      }
-    });
   };
 
   executeCallback = (value) => {
@@ -332,6 +343,7 @@ class TriStateToggleSwitch extends Component {
     const { _addPropStyle, _setCircleSize } = this;
     const containerStyle = { ...styles.container };
     if (this.state.selected === SELECTED_NONE) {
+      this.debugLog(this.props.selectedNoneBgColor)
       _addPropStyle(
         'backgroundColor',
         'selectedNoneBgColor',
@@ -339,6 +351,7 @@ class TriStateToggleSwitch extends Component {
         '#41B6E6'
       );
     } else if (this.state.selected === SELECTED_LEFT) {
+      this.debugLog(this.props.selectedLeftBgColor)
       _addPropStyle(
         'backgroundColor',
         'selectedLeftBgColor',
@@ -346,6 +359,7 @@ class TriStateToggleSwitch extends Component {
         '#3171BF'
       );
     } else if (this.state.selected === SELECTED_RIGHT) {
+      this.debugLog(this.props.selectedRightBgColor)
       _addPropStyle(
         'backgroundColor',
         'selectedRightBgColor',
