@@ -62,7 +62,7 @@ class TriStateToggleSwitch extends Component {
 
   constructor(props) {
     super(props);
-    this.debugLog("Props: ", msg)
+    this.debugLog("Props: ", this.props)
     if (this.props.disabled) {
       console.log("DISABLED", "setting to grey choices")
       this.props.selectedNoneBgColor = "#EEEEEEE"
