@@ -55,17 +55,14 @@ export const log = (methodName, evt, gestureState) => {
 };
 
 class TriStateToggleSwitch extends Component {
-  debugLog(msg) {
-    if (this.props.debug)
-      console.log(msg)
-  }
+  
 
   constructor(props) {
     super(props);
-    this.debugLog("Props: ")
-    this.debugLog(this.props)
+    console.log("Props: ")
+    console.log(this.props)
     if (this.props.disabled) {
-      this.debugLog("DISABLED setting to grey")
+      console.log("DISABLED setting to grey")
       this.props.selectedNoneBgColor = "#EEEEEEE"
       this.props.selectedLeftBgColor = "#EEEEEEE"
       this.props.selectedRightBgColor = "#EEEEEEE"
@@ -224,7 +221,7 @@ class TriStateToggleSwitch extends Component {
     });
 
     if (!this.props.disabled) {
-      this.debugLog("Allow moving")
+      console.log("Allow moving")
       thisComponent.containerPanResponder = PanResponder.create({
         onStartShouldSetPanResponder: () => true,
         onPanResponderTerminationRequest: () => false,
@@ -344,7 +341,7 @@ class TriStateToggleSwitch extends Component {
     const { _addPropStyle, _setCircleSize } = this;
     const containerStyle = { ...styles.container };
     if (this.state.selected === SELECTED_NONE) {
-      this.debugLog(this.props.selectedNoneBgColor)
+      console.log(this.props.selectedNoneBgColor)
       _addPropStyle(
         'backgroundColor',
         'selectedNoneBgColor',
@@ -352,7 +349,7 @@ class TriStateToggleSwitch extends Component {
         '#41B6E6'
       );
     } else if (this.state.selected === SELECTED_LEFT) {
-      this.debugLog(this.props.selectedLeftBgColor)
+      console.log(this.props.selectedLeftBgColor)
       _addPropStyle(
         'backgroundColor',
         'selectedLeftBgColor',
@@ -360,7 +357,7 @@ class TriStateToggleSwitch extends Component {
         '#3171BF'
       );
     } else if (this.state.selected === SELECTED_RIGHT) {
-      this.debugLog(this.props.selectedRightBgColor)
+      console.log(this.props.selectedRightBgColor)
       _addPropStyle(
         'backgroundColor',
         'selectedRightBgColor',
