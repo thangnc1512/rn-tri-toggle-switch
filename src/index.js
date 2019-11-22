@@ -56,7 +56,6 @@ export const log = (methodName, evt, gestureState) => {
 
 class TriStateToggleSwitch extends Component {
   
-
   constructor(props) {
     super(props);
     console.log("Props: ")
@@ -376,11 +375,12 @@ class TriStateToggleSwitch extends Component {
     _addPropStyle('color', 'fontColor', touchableTextStyle, '#fff');
     _addPropStyle('fontSize', 'fontSize', touchableTextStyle, 12);
 
+    const containerPanHandlers = this.containerPanResponder ? this.containerPanResponder.panHandlers : {}
     return (
       <View style={{ ...styles.formContainer }}>
         <View
           style={containerStyle}
-          {...this.containerPanResponder.panHandlers}
+          {...containerPanHandlers}
         >
           <Animated.View
             style={{
