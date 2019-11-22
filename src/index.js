@@ -139,7 +139,8 @@ class TriStateToggleSwitch extends Component {
   }
 
   onPressNo = () => {
-    if (this.state.selected === SELECTED_LEFT && !this.props.disabled) {
+    if (this.props.disabled) return
+    if (this.state.selected === SELECTED_LEFT) {
       // if selected is no then select yes
       this.onPressYes();
     } else {
@@ -156,7 +157,7 @@ class TriStateToggleSwitch extends Component {
   };
 
   onPressNone = () => {
-    if (!this.props.disabled)
+    if (this.props.disabled) return 
     this.state.circleXPos.setOffset(0);
     this.state.circleXPos.setValue(this._lastCircleXPosOrigin);
     this._lastCircleXPosOrigin = 0;
@@ -194,7 +195,8 @@ class TriStateToggleSwitch extends Component {
   };
 
   onPressYes = () => {
-    if (this.state.selected === SELECTED_RIGHT && !this.props.disabled) {
+    if (this.props.disabled) return
+    if (this.state.selected === SELECTED_RIGHT) {
       // if selected is yes then select no
       this.onPressNo();
     } else {
