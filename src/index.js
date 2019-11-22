@@ -55,16 +55,17 @@ export const log = (methodName, evt, gestureState) => {
 };
 
 class TriStateToggleSwitch extends Component {
-  debugLog(...msg) {
+  debugLog(msg) {
     if (this.props.debug)
-      console.log(...msg)
+      console.log(msg)
   }
 
   constructor(props) {
     super(props);
-    this.debugLog("Props: ", this.props)
+    this.debugLog("Props: ")
+    this.debugLog(this.props)
     if (this.props.disabled) {
-      console.log("DISABLED", "setting to grey choices")
+      this.debugLog("DISABLED setting to grey")
       this.props.selectedNoneBgColor = "#EEEEEEE"
       this.props.selectedLeftBgColor = "#EEEEEEE"
       this.props.selectedRightBgColor = "#EEEEEEE"
