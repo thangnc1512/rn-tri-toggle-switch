@@ -84,7 +84,7 @@ class TriStateToggleSwitch extends Component {
     this.initializeContainerPanResponder();
   }
 
-  componentDidMount() {
+  initialData = () => {
     const { initialValue } = this.props;
     if (initialValue !== null) {
       const initialChoiceIndex = this.choices.findIndex(element => element.choiceCode === initialValue);
@@ -106,6 +106,16 @@ class TriStateToggleSwitch extends Component {
           selected: SELECTED_RIGHT
         });
       }
+    }
+  }
+
+  componentDidMount() {
+    this.initialData()
+  }
+
+  componentDidUpdate(prevProp) {
+    if (prevProp.initialValue !== this.props.initialValue) {
+      this.initialData()
     }
   }
 
@@ -305,7 +315,7 @@ class TriStateToggleSwitch extends Component {
     if (prop) {
       styleJson[cssStyleName] = prop;
     } else {
-      if(defaultValue) {
+      if (defaultValue) {
         styleJson[cssStyleName] = defaultValue;
       }
     }
