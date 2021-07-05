@@ -22,6 +22,8 @@ const defaultChoices = [
 const SELECTED_NONE = 'none';
 const SELECTED_RIGHT = 'right';
 const SELECTED_LEFT = 'left';
+const DEFAULT_WIDTH = 120;
+const DEFAULT_HEIGHT = 24
 
 /* TODO: Implementation
   <TriStateToggleSwitch
@@ -122,11 +124,11 @@ class TriStateToggleSwitch extends Component {
   static getDerivedStateFromProps(nextProps, prevState) {
     let { width, height } = nextProps;
     if (!width) {
-      width = 120; // default width
+      width = DEFAULT_WIDTH; // default width
     }
 
     if (!height) {
-      height = 24; // default height
+      height = DEFAULT_HEIGHT; // default height
     }
 
     const xDistance = (width / 2) - ((height - 4) / 2) - 5;
@@ -219,6 +221,8 @@ class TriStateToggleSwitch extends Component {
       this._storedCircleXPos = value;
     });
 
+    const halfWidth = (this.props.width ?? DEFAULT_WIDTH) / 2
+
     thisComponent.containerPanResponder = PanResponder.create({
       onStartShouldSetPanResponder: () => true,
       onPanResponderTerminationRequest: () => false,
@@ -231,6 +235,10 @@ class TriStateToggleSwitch extends Component {
       },
       onPanResponderMove: (evt, gestureState) => {
         log('onPanResponderMove: ', evt, gestureState);
+        if (Math.abs(gestureState.dx) > halfWidth) {
+          return null
+        }
+
         return Animated.event([
           null,
           {
